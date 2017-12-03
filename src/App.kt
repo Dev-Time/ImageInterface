@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.FlowPane
 import javafx.stage.Stage
+import java.io.File
 import java.util.*
 
 
@@ -21,8 +22,21 @@ class App: Application() {
 
         var imageIndex = 0
 
-        images.add(Image("file:ship-thrust.png", false))
-        images.add(Image("file:ship-nothrust.png", true))
+        val currentDirectory = File(".")
+        val fileWalk = currentDirectory.walkTopDown().maxDepth(1)
+        fileWalk.maxDepth(1)
+        val fileIterator = fileWalk.iterator()
+
+        for (i in fileIterator) {
+            if (i.isFile && i.extension == "png") {
+                if (images.size == 0) {
+                    images.add(Image("file:" + i.absolutePath, false))
+                }
+                else {
+                    images.add(Image("file:" + i.absolutePath, true))
+                }
+            }
+        }
 
         val clearButton = Button()
         clearButton.text = "Clear"
