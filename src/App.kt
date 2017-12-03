@@ -58,6 +58,8 @@ class App: Application() {
                 println(i)
             }
 
+            coords.clear()
+
             if (imageIndex < images.size - 1) {
                 imageIndex++
                 imageView.prefHeight(images[imageIndex].height)
