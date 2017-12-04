@@ -53,20 +53,6 @@ class App: Application() {
 
         val nextButton = Button()
         nextButton.text = "Next"
-        nextButton.onAction = EventHandler<ActionEvent> {
-            for (i in coords) {
-                println(i)
-            }
-
-            coords.clear()
-
-            if (imageIndex < images.size - 1) {
-                imageIndex++
-                imageView.prefHeight(images[imageIndex].height)
-                imageView.prefWidth(images[imageIndex].width)
-                imageView.image = images[imageIndex]
-            }
-        }
 
         val buttonPane = FlowPane(Orientation.HORIZONTAL)
         buttonPane.children.add(clearButton)
@@ -79,6 +65,23 @@ class App: Application() {
         root.prefWrapLength = images[0].height + 100
 
         primaryStage.scene = Scene(root)
+
+        nextButton.onAction = EventHandler<ActionEvent> {
+            for (i in coords) {
+                println(i)
+            }
+
+            coords.clear()
+
+            if (imageIndex < images.size - 1) {
+                imageIndex++
+                imageView.prefHeight(images[imageIndex].height)
+                imageView.prefWidth(images[imageIndex].width)
+                imageView.image = images[imageIndex]
+                primaryStage.width = images[imageIndex].width
+            }
+        }
+
         primaryStage.show()
     }
 
