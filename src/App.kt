@@ -1,6 +1,7 @@
 import javafx.application.Application
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
+import javafx.geometry.Insets
 import javafx.geometry.Orientation
 import javafx.scene.Scene
 import javafx.scene.control.Button
@@ -8,10 +9,10 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.FlowPane
+import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 import java.io.File
 import java.util.*
-
 
 class App: Application() {
     override fun start(primaryStage: Stage) {
@@ -40,7 +41,13 @@ class App: Application() {
 
         val clearButton = Button()
         clearButton.text = "Clear"
-        clearButton.onAction = EventHandler<ActionEvent> { coords.clear() }
+
+        val stackPane = StackPane()
+
+        clearButton.onAction = EventHandler<ActionEvent> {
+            coords.clear()
+            stackPane.children.remove(1, stackPane.children.size)
+        }
 
         val imageView = ImageView(images[imageIndex])
         //imageView.fitWidth =100.0
@@ -49,7 +56,10 @@ class App: Application() {
         imageView.isCache = true
         imageView.prefHeight(images[imageIndex].height)
         imageView.prefWidth(images[imageIndex].width)
-        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, MyEventHandler(coords))
+        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, MyEventHandler(coords, stackPane))
+
+        StackPane.setMargin(imageView, Insets(50.0, 50.0, 50.0, 50.0))
+        stackPane.children.add(imageView)
 
         val nextButton = Button()
         nextButton.text = "Next"
@@ -60,9 +70,9 @@ class App: Application() {
         buttonPane.prefWrapLength = 100.0
 
         val root = FlowPane(Orientation.VERTICAL)
-        root.children.add(imageView)
+        root.children.add(stackPane)
         root.children.add(buttonPane)
-        root.prefWrapLength = images[0].height + 100
+        root.prefWrapLength = images[0].height + 200
 
         primaryStage.scene = Scene(root)
 
@@ -72,13 +82,14 @@ class App: Application() {
             }
 
             coords.clear()
+            stackPane.children.remove(1, stackPane.children.size)
 
             if (imageIndex < images.size - 1) {
                 imageIndex++
                 imageView.prefHeight(images[imageIndex].height)
                 imageView.prefWidth(images[imageIndex].width)
                 imageView.image = images[imageIndex]
-                primaryStage.width = images[imageIndex].width
+                primaryStage.width = images[imageIndex].width + 100
             }
         }
 
