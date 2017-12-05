@@ -16,7 +16,12 @@ import java.util.*
 
 class App: Application() {
     override fun start(primaryStage: Stage) {
-        primaryStage.title = "Landmark Identification"
+        val clearButton = Button()
+        val nextButton = Button()
+        val buttonPane = FlowPane(Orientation.HORIZONTAL)
+        val imageView = ImageView()
+        val stackPane = StackPane()
+        val root = FlowPane(Orientation.VERTICAL)
 
         val coords = LinkedList<Coordinate>()
         val images = LinkedList<Image>()
@@ -38,44 +43,25 @@ class App: Application() {
                 }
             }
         }
+        primaryStage.title = "Landmark Identification"
+        primaryStage.scene = Scene(root)
 
-        val clearButton = Button()
         clearButton.text = "Clear"
-
-        val stackPane = StackPane()
-
         clearButton.onAction = EventHandler<ActionEvent> {
             coords.clear()
             stackPane.children.remove(1, stackPane.children.size)
         }
 
-        val imageView = ImageView(images[imageIndex])
-        //imageView.fitWidth =100.0
+        imageView.image = images[imageIndex]
         imageView.isPreserveRatio = true
         imageView.isSmooth = true
         imageView.isCache = true
-        imageView.prefHeight(images[imageIndex].height)
-        imageView.prefWidth(images[imageIndex].width)
         imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, MyEventHandler(coords, stackPane))
 
         StackPane.setMargin(imageView, Insets(50.0, 50.0, 50.0, 50.0))
         stackPane.children.add(imageView)
 
-        val nextButton = Button()
         nextButton.text = "Next"
-
-        val buttonPane = FlowPane(Orientation.HORIZONTAL)
-        buttonPane.children.add(clearButton)
-        buttonPane.children.add(nextButton)
-        buttonPane.prefWrapLength = 100.0
-
-        val root = FlowPane(Orientation.VERTICAL)
-        root.children.add(stackPane)
-        root.children.add(buttonPane)
-        root.prefWrapLength = images[0].height + 200
-
-        primaryStage.scene = Scene(root)
-
         nextButton.onAction = EventHandler<ActionEvent> {
             for (i in coords) {
                 println(i)
@@ -86,12 +72,17 @@ class App: Application() {
 
             if (imageIndex < images.size - 1) {
                 imageIndex++
-                imageView.prefHeight(images[imageIndex].height)
-                imageView.prefWidth(images[imageIndex].width)
                 imageView.image = images[imageIndex]
                 primaryStage.width = images[imageIndex].width + 100
             }
         }
+
+        buttonPane.children.add(clearButton)
+        buttonPane.children.add(nextButton)
+
+        root.children.add(stackPane)
+        root.children.add(buttonPane)
+        root.prefWrapLength = images[0].height + 200
 
         primaryStage.show()
     }
