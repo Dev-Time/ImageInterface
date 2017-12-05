@@ -12,6 +12,7 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 class App: Application() {
@@ -25,6 +26,7 @@ class App: Application() {
 
         val coords = LinkedList<Coordinate>()
         val images = LinkedList<Image>()
+        val imagePaths = LinkedList<String>()
 
         var imageIndex = 0
 
@@ -41,6 +43,7 @@ class App: Application() {
                 else {
                     images.add(Image("file:" + i.absolutePath, true))
                 }
+                imagePaths.add(i.absolutePath.dropLast(4))
             }
         }
         primaryStage.title = "Landmark Identification"
@@ -63,9 +66,17 @@ class App: Application() {
 
         nextButton.text = "Next"
         nextButton.onAction = EventHandler<ActionEvent> {
+
+            val file = FileOutputStream(imagePaths[imageIndex] + ".csv").bufferedWriter()
+
             for (i in coords) {
+                file.append(i.x.toString() + ',' + i.y.toString())
+                file.newLine()
                 println(i)
+
             }
+
+            file.close()
 
             coords.clear()
             stackPane.children.remove(1, stackPane.children.size)
