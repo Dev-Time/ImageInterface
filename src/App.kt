@@ -49,6 +49,7 @@ class App: Application() {
 
         if (images.size < 1) {
             println("No image files found in current directory")
+            return
         }
 
         primaryStage.title = "Landmark Identification"
