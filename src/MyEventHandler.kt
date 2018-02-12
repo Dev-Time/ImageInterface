@@ -9,7 +9,7 @@ import javafx.scene.shape.Circle
 import javafx.scene.text.Font
 import java.util.*
 
-class MyEventHandler(private val coords: LinkedList<Coordinate>, val stackPane: StackPane) : EventHandler<MouseEvent> {
+class MyEventHandler(private val coords: LinkedList<Coordinate>, private val stackPane: StackPane) : EventHandler<MouseEvent> {
     override fun handle(event: MouseEvent) {
         coords.add(Coordinate(event.x, event.y))
 
