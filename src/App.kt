@@ -5,6 +5,7 @@ import javafx.geometry.Insets
 import javafx.geometry.Orientation
 import javafx.scene.Scene
 import javafx.scene.control.Button
+import javafx.scene.control.ScrollPane
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
@@ -97,9 +98,14 @@ class App: Application() {
         buttonPane.children.add(clearButton)
         buttonPane.children.add(nextButton)
 
-        root.children.add(stackPane)
+        val scrollpane = ScrollPane()
+        scrollpane.maxHeight = 900.0
+        scrollpane.maxWidth = 1900.0
+        scrollpane.content = stackPane
+
+        root.children.add(scrollpane)
         root.children.add(buttonPane)
-        root.prefWrapLength = images[0].height + 200
+        root.prefWrapLength = 1000.0
 
         primaryStage.show()
     }
