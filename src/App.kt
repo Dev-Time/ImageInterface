@@ -46,6 +46,11 @@ class App: Application() {
                 imagePaths.add(i.absolutePath.dropLast(4))
             }
         }
+
+        if (images.size < 1) {
+            println("No image files found in current directory")
+        }
+
         primaryStage.title = "Landmark Identification"
         primaryStage.scene = Scene(root)
 
